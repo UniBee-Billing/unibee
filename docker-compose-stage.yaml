@@ -1,8 +1,8 @@
 version: "3.8"
 
-#volumes:
-#  unibee_db_data: unibee_db_data
-#  unibee_redis_data:
+volumes:
+ unibee_mysql_data: 
+ unibee_redis_data:
 
 services:
   db:
@@ -16,7 +16,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-changeme}
       MYSQL_PORT: ${DB_PORT:-3306}
     volumes:
-      - ./unibee_db_data:/var/lib/mysql
+      - unibee_mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./mysql:/opt/sql
     ports:
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
     command: --port ${REDIS_PORT:-6379} --requirepass ${REDIS_PASSWORD:-changeme}
     volumes:
-      - ./unibee_redis_data:/data
+      - unibee_redis_data:/data
     ports:
       - ${REDIS_PORT:-6379}:${REDIS_PORT-6379}
 
