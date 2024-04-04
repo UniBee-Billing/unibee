@@ -1,0 +1,56 @@
+version: "3.8"
+
+#volumes:
+#  unibee_db_data: unibee_db_data
+#  unibee_redis_data:
+
+services:
+  db:
+    image: mysql:8.0.13
+    container_name: unibee-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-unibee}
+      MYSQL_USER: ${DB_USER:-unibee}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-changeme}
+      MYSQL_PORT: ${DB_PORT:-3306}
+    volumes:
+      - ./unibee_db_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql:/opt/sql
+    ports:
+      - ${DB_PORT:-3306}:${DB_PORT:-3306}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  redis:
+    image: redis:6-alpine
+    container_name: unibee-redis
+    restart: unless-stopped
+    command: --port ${REDIS_PORT:-6379} --requirepass ${REDIS_PASSWORD:-changeme}
+    volumes:
+      - ./unibee_redis_data:/data
+    ports:
+      - ${REDIS_PORT:-6379}:${REDIS_PORT-6379}
+
+  api:
+    container_name: unibee-api
+    image: unibee/api:stage
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    healthcheck:
+      test: curl -f http://localhost:8088/health || exit 1
+      interval: 10s
+      start_period: 30s
+      timeout: 60s
+      # uncomment for a potentially faster startup if you have docker --version > 25.0.0
+      # start_interval: 2s
+    environment:
+      - DATABASE_LINK=mysql:root:${DB_ROOT_PASSWORD:-changeme}@tcp(${DB_HOST:-db}:${DB_PORT:-3306})/${DB_DATABASE:-unibee}?loc=UTC&parseTime=false
+      - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
+      - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
+    ports:
+      - ${API_PORT:-8088}:8088
