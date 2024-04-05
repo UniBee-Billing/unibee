@@ -58,7 +58,7 @@ services:
 
   userPortal:
     container_name: unibee-user-portal
-    image: unibee/user-portal:daily
+    image: unibee/user-portal:stage
     restart: unless-stopped
     depends_on:
       - api
@@ -69,7 +69,7 @@ services:
 
   adminPortal:
     container_name: unibee-admin-portal
-    image: unibee/merchant-portal:daily
+    image: unibee/merchant-portal:stage
     restart: unless-stopped
     depends_on:
       - api
