@@ -43,11 +43,12 @@ services:
     container_name: unibee-api
     image: unibee/api:stage
     restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+    # uncomment for startup depends_on db and redis service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    #   redis:
+    #     condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8088/health || exit 1
       interval: 10s
