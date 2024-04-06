@@ -15,6 +15,10 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-changeme}
       MYSQL_PORT: ${DB_PORT:-3306}
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10      
     volumes:
       - unibee_mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -28,6 +32,8 @@ services:
     container_name: unibee-redis
     restart: unless-stopped
     command: --port ${REDIS_PORT:-6379} --requirepass ${REDIS_PASSWORD:-changeme}
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]    
     volumes:
       - unibee_redis_data:/data
     ports:
@@ -38,8 +44,10 @@ services:
     image: unibee/api:stage
     restart: unless-stopped
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     healthcheck:
       test: curl -f http://localhost:8088/health || exit 1
       interval: 10s
@@ -60,8 +68,6 @@ services:
     container_name: unibee-user-portal
     image: unibee/user-portal:stage
     restart: unless-stopped
-    depends_on:
-      - api
     environment:
       - UNIBEE_API_URL=${UNIBEE_API_URL:-http://localhost:8088}
     ports:
@@ -71,8 +77,6 @@ services:
     container_name: unibee-admin-portal
     image: unibee/admin-portal:stage
     restart: unless-stopped
-    depends_on:
-      - api
     environment:
       - UNIBEE_API_URL=${UNIBEE_API_URL:-http://localhost:8088}
     ports:
