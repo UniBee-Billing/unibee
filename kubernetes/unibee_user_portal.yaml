@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unibee-user-protal
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: unibee-user-protal
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: unibee-user-protal
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: unibee-user-protal
+          image: unibee/user-portal:stage
+          imagePullPolicy: Always
+          env:
+            - name: UNIBEE_API_URL
+              value: "http://unibee-api-svc"
+          ports:
+            - containerPort: 80
+              name: http
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unibee-user-protal-svc
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: unibee-user-protal

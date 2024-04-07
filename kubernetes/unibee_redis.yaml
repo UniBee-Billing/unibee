@@ -1,0 +1,46 @@
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: unibee-redis
+  namespace: default
+  labels:
+    k8s-app: unibee-redis
+spec:
+  replicas: 1
+  serviceName: "unibee-redis"  
+  selector:
+    matchLabels:
+      k8s-app: unibee-redis
+  template:
+    metadata:
+      name: unibee-redis
+      labels:
+        k8s-app: unibee-redis
+    spec:
+      containers:
+        - name: unibee-redis
+          image: >-
+            redis:6-alpine
+          imagePullPolicy: Always
+          command: ["redis-server", "--appendonly", "yes", "--requirepass","changeme"]
+      restartPolicy: Always
+
+--- 
+kind: Service
+apiVersion: v1
+metadata:
+  name: unibee-redis-svc
+  namespace: default
+  labels:
+    k8s-app: unibee-redis-svc
+spec:
+  ports:
+  - name: redis-svc
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+  selector:
+    k8s-app: unibee-redis
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster

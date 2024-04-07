@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unibee-api
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: unibee-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: unibee-api
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: unibee-api
+          image: unibee/api:stage
+          imagePullPolicy: Always
+          env:
+            - name: UNIBEE_API_URL
+              value: "http://unibee-api-svc"
+            - name: DATABASE_LINK
+              value: "mysql:root:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false"
+            - name: REDIS_ADDRESS
+              value: "unibee-redis-svc"
+            - name: REDIS_PASSWORD
+              value: "changeme"
+          ports:
+            - containerPort: 8088
+              name: http
+          livenessProbe:         
+            httpGet:             
+              path: /health      
+              port: 8088
+              scheme: HTTP
+            initialDelaySeconds: 30 
+            periodSeconds: 10    
+            timeoutSeconds: 10  
+            failureThreshold: 100
+          readinessProbe:
+            failureThreshold: 600
+            httpGet:
+              path: /health
+              port: 8088
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 5
+            timeoutSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unibee-api-svc
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: unibee-api
