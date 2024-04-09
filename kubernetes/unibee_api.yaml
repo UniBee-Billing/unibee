@@ -24,7 +24,7 @@ spec:
             - name: DATABASE_LINK
               value: "mysql:root:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false"
             - name: REDIS_ADDRESS
-              value: "unibee-redis-svc"
+              value: "unibee-redis-svc:6379"
             - name: REDIS_PASSWORD
               value: "changeme"
           ports:
