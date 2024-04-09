@@ -1,0 +1,195 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unibee-nginx-config
+  labels:
+    app: nginx
+data:
+  nginx.conf: |-
+    user root;
+    worker_processes auto;
+
+    error_log /var/log/nginx/error.log error;
+    pid /var/run/nginx.pid;
+
+    events {
+        worker_connections 100001;
+    }
+
+    http {
+        map $http_upgrade $connection_upgrade {
+            default upgrade;
+            '' close;
+        }
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        # log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+        # '$status $body_bytes_sent "$http_referer" '
+        # '"$http_user_agent" "$http_x_forwarded_for"';
+
+        log_format main '$remote_addr\t$time_local\t'
+                '$status\t$body_bytes_sent\t$request_time\t$upstream_response_time\t$upstream_addr\t'
+                '\t$request\t'
+                '$http_referer\t$http_user_agent\t$http_x_forwarded_for\t'
+                ;
+
+        access_log on;
+
+        sendfile on;
+        #tcp_nopush     on;
+
+        keepalive_timeout 120s;
+        keepalive_requests 10000; 
+
+        gzip on;
+        gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gifimage/png;
+
+        client_max_body_size 200m;
+        client_header_buffer_size 32k;
+        large_client_header_buffers 4 32k;
+
+        server {
+            listen 80;
+            # listen 443 ssl;
+            server_name _;
+            # ssl_certificate ./domains/www.unibee.top.pem;
+            # ssl_certificate_key ./domains/www.unibee.top.key;
+            # ssl_session_timeout 5m;
+            # ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+            # ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            # ssl_prefer_server_ciphers on;    
+
+            location /api {
+                proxy_set_header           X-Real-IP $remote_addr;
+                proxy_set_header           X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header           X-Forwarded-Proto $scheme;
+                proxy_set_header           X-Requested-With $http_x_requested_with;
+                proxy_set_header           Host $host;
+                proxy_redirect             off;
+
+                add_header                 X-Soure '223';
+                add_header                 Upsteam-addr '$upstream_addr';
+                add_header                 Strict-Transport-Security max-age=0; 
+                proxy_pass http://unibee-api-svc/;
+            }
+
+            location / {
+                add_header X-Frame-Options SAMEORIGIN;
+                add_header Strict-Transport-Security value;
+                add_header Referrer-Policy value;
+                add_header Content-Security-Policy value;
+                add_header X-Permitted-Cross-Domain-Policies value;
+                add_header X-XSS-Protection value;
+                add_header X-Download-Options value;
+                add_header X-Content-Type-Options value;
+                # access_log off;
+
+                proxy_buffer_size 64k;
+                proxy_buffers 32 32k;
+                proxy_busy_buffers_size 128k;
+                proxy_pass http://unibee-admin-protal-svc;
+            }
+
+            access_log  /var/log/nginx/access.log  main;
+        }
+
+        include ./domains/*_server.conf;
+    }
+
+---    
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unibee-nginx-domains-config
+  labels:
+    app: nginx
+data:
+  www.unibee.top.key: |-
+    key_pem
+  www.unibee.net.pem: |-
+    secret_pem
+---    
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unibee-nginx-statics-config
+  labels:
+    app: nginx
+data:
+  index.html: |-
+    welcome
+  version.txt: |-
+    1.0.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: registry.cn-shenzhen.aliyuncs.com/heiku/heiku_nginx_mirror:3.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 80
+            - name: https
+              protocol: TCP
+              containerPort: 443                                         
+          volumeMounts:
+          - name: nginxconf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+          - name: nginxdomains
+            mountPath: /etc/nginx/domains/       
+          - name: nginxstatics
+            mountPath: /etc/nginx/file/                    
+      volumes:
+      - name: nginxconf      
+        configMap:
+          name: unibee-nginx-config     
+      - name: nginxdomains     
+        configMap:
+          name: unibee-nginx-domains-config    
+      - name: nginxstatics     
+        configMap:
+          name: unibee-nginx-statics-config                                                         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  name: unibee-nginx-service
+  namespace: default
+spec:
+  ports:
+    - name: "http"
+      port: 80
+      targetPort: 80
+      nodePort: 80
+      protocol: TCP
+    - name: "https"
+      port: 443
+      targetPort: 443
+      nodePort: 443
+      protocol: TCP               
+  selector:
+    app: nginx
+  sessionAffinity: None
+  type: LoadBalancer
