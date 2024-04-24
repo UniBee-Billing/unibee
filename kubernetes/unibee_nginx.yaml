@@ -77,7 +77,6 @@ data:
             }
 
             location / {
-                add_header X-Frame-Options SAMEORIGIN;
                 add_header Strict-Transport-Security value;
                 add_header Referrer-Policy value;
                 add_header Content-Security-Policy value;
