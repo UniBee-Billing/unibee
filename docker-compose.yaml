@@ -1,0 +1,90 @@
+version: "3.8"
+
+volumes:
+ unibee_mysql_data: 
+ unibee_redis_data:
+
+services:
+  db:
+    image: mysql:8.0.13
+    container_name: unibee-db
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-unibee}
+      MYSQL_USER: ${DB_USER:-unibee}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-changeme}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-changeme}
+      MYSQL_PORT: ${DB_PORT:-3306}
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10      
+    volumes:
+      - unibee_mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql:/opt/sql
+    ports:
+      - ${DB_PORT:-3306}:${DB_PORT:-3306}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  redis:
+    image: redis:6-alpine
+    container_name: unibee-redis
+    platform: linux/amd64
+    restart: unless-stopped
+    command: --port ${REDIS_PORT:-6379} --requirepass ${REDIS_PASSWORD:-changeme}
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]    
+    volumes:
+      - unibee_redis_data:/data
+    ports:
+      - ${REDIS_PORT:-6379}:${REDIS_PORT-6379}
+
+  api:
+    container_name: unibee-api
+    image: unibee/api:1.0
+    platform: linux/amd64
+    restart: unless-stopped
+    # uncomment for startup depends_on db and redis service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    #   redis:
+    #     condition: service_healthy
+    healthcheck:
+      test: curl -f http://127.0.0.1:8088/health || exit 1
+      interval: 10s
+      start_period: 30s
+      timeout: 60s
+      # uncomment for a potentially faster startup if you have docker --version > 25.0.0
+      # start_interval: 2s
+    environment:
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1:8088}
+      - DATABASE_LINK=mysql:root:${DB_ROOT_PASSWORD:-changeme}@tcp(${DB_HOST:-db}:${DB_PORT:-3306})/${DB_DATABASE:-unibee}?loc=UTC&parseTime=false
+      - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
+      - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
+      - ENV=${ENV:-prod}
+    ports:
+      - ${API_PORT:-8088}:8088
+
+  userPortal:
+    container_name: unibee-user-portal
+    image: unibee/user-portal:1.0
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1:8088}
+    ports:
+      - ${API_PORT:-8086}:80
+
+  adminPortal:
+    container_name: unibee-admin-portal
+    image: unibee/admin-portal:1.0
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://localhost:8088}
+    ports:
+      - ${API_PORT:-80}:80      
