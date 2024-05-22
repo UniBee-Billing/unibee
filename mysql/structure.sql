@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : unibee-stage-mysql
- Source Server Type    : MySQL
- Source Server Version : 80013 (8.0.13)
- Source Host           : api.unibee.top:13306
- Source Schema         : unib
-
- Target Server Type    : MySQL
- Target Server Version : 80013 (8.0.13)
- File Encoding         : 65001
-
- Date: 04/04/2024 15:50:08
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -31,7 +15,7 @@ CREATE TABLE `country_rate` (
   `longitude` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'longitude',
   `vat` int(11) NOT NULL DEFAULT '0' COMMENT 'vat contains，1-yes，2-no',
   `eu` int(11) NOT NULL DEFAULT '0' COMMENT 'is eu member state, 1-yes, 2-no',
-  `standard_tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Standard Tax Scale，1000 = 10%',
+  `standard_tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Standard Tax Percentage，1000 = 10%',
   `other` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'other rates(json)',
   `standard_description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'standard_description',
   `standard_types` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'standard_typs ',
@@ -43,7 +27,7 @@ CREATE TABLE `country_rate` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `unique` (`merchant_id`,`gateway`,`country_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=1419 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Country Rate';
+) ENGINE=InnoDB AUTO_INCREMENT=2172 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Country Rate';
 
 -- ----------------------------
 -- Table structure for email_default_template
@@ -62,7 +46,7 @@ CREATE TABLE `email_default_template` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_default_template_unique` (`template_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3301 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Email Default Template';
+) ENGINE=InnoDB AUTO_INCREMENT=3308 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Email Default Template';
 
 -- ----------------------------
 -- Table structure for file_upload
@@ -79,7 +63,7 @@ CREATE TABLE `file_upload` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4379 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='File Upload';
+) ENGINE=InnoDB AUTO_INCREMENT=5691 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='File Upload';
 
 -- ----------------------------
 -- Table structure for gateway_http_log
@@ -97,7 +81,7 @@ CREATE TABLE `gateway_http_log` (
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=34294 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Channel Http Log';
+) ENGINE=InnoDB AUTO_INCREMENT=38395 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Channel Http Log';
 
 -- ----------------------------
 -- Table structure for gateway_user
@@ -115,7 +99,7 @@ CREATE TABLE `gateway_user` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `gateway_user_unique` (`user_id`,`gateway_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Channel User';
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Channel User';
 
 -- ----------------------------
 -- Table structure for gateway_vat_rate
@@ -153,6 +137,7 @@ CREATE TABLE `invoice` (
   `subscription_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'sub amount,cent',
   `currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'currency',
   `lines` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'lines( json)',
+  `payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'paymentId',
   `gateway_id` bigint(20) unsigned NOT NULL COMMENT 'gateway_id',
   `status` int(11) NOT NULL DEFAULT '0' COMMENT 'status，0-Init | 1-pending｜2-processing｜3-paid | 4-failed | 5-cancelled ',
   `send_status` int(11) NOT NULL DEFAULT '0' COMMENT 'email send status，0-No | 1- YES| 2-Unnecessary',
@@ -165,16 +150,16 @@ CREATE TABLE `invoice` (
   `gateway_invoice_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gateway_payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gateway_invoice_pdf` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Tax scale，1000 = 10%',
+  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'TaxPercentage，1000 = 10%',
   `send_note` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'send_note',
   `send_terms` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'send_terms',
   `total_amount_excluding_tax` bigint(20) NOT NULL DEFAULT '0',
   `subscription_amount_excluding_tax` bigint(20) NOT NULL DEFAULT '0',
   `period_start` bigint(20) DEFAULT '0' COMMENT 'period_start, utc time',
   `period_end` bigint(20) DEFAULT '0' COMMENT 'period_end utc time',
+  `trial_end` bigint(20) DEFAULT NULL COMMENT 'trial_end, utc time',
   `period_start_time` timestamp NULL DEFAULT NULL,
   `period_end_time` timestamp NULL DEFAULT NULL,
-  `payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'paymentId',
   `refund_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'refundId',
   `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'data (json)',
   `biz_type` int(11) DEFAULT NULL COMMENT 'biz type from payment 1-single payment, 3-subscription',
@@ -184,9 +169,15 @@ CREATE TABLE `invoice` (
   `finish_time` bigint(20) DEFAULT NULL COMMENT 'utc time of enter process ',
   `day_util_due` bigint(20) DEFAULT '3' COMMENT 'day util due after process',
   `last_track_time` bigint(20) DEFAULT NULL COMMENT 'last process invoice track time',
+  `discount_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'discount_code',
+  `discount_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'discount amount, cent',
+  `country_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'product name',
+  `gas_payer` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gas_payer',
+  `gateway_payment_method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway_payment_method',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `invoice_unique` (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1131 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Invoice';
+) ENGINE=InnoDB AUTO_INCREMENT=1813 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Invoice';
 
 -- ----------------------------
 -- Table structure for merchant
@@ -215,7 +206,7 @@ CREATE TABLE `merchant` (
   `host` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'merchant user portal host',
   `api_key` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'merchant open api key',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15656 DEFAULT CHARSET=utf8 COMMENT='Merchant';
+) ENGINE=InnoDB AUTO_INCREMENT=15671 DEFAULT CHARSET=utf8 COMMENT='Merchant';
 
 -- ----------------------------
 -- Table structure for merchant_config
@@ -232,7 +223,7 @@ CREATE TABLE `merchant_config` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_config_unique` (`merchant_id`,`config_key`)
-) ENGINE=InnoDB AUTO_INCREMENT=15714 DEFAULT CHARSET=utf8 COMMENT='Merchant Config';
+) ENGINE=InnoDB AUTO_INCREMENT=15756 DEFAULT CHARSET=utf8 COMMENT='Merchant Config';
 
 -- ----------------------------
 -- Table structure for merchant_country_config
@@ -252,6 +243,37 @@ CREATE TABLE `merchant_country_config` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3298 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Merchant Country Config';
 
 -- ----------------------------
+-- Table structure for merchant_discount_code
+-- ----------------------------
+DROP TABLE IF EXISTS `merchant_discount_code`;
+CREATE TABLE `merchant_discount_code` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `merchant_id` bigint(64) unsigned DEFAULT NULL COMMENT 'merchantId',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'name',
+  `code` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'code',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT 'status, 1-editable, 2-active, 3-deactive, 4-expire',
+  `billing_type` int(11) NOT NULL DEFAULT '1' COMMENT 'billing_type, 1-one-time, 2-recurring',
+  `discount_type` int(11) NOT NULL DEFAULT '1' COMMENT 'discount_type, 1-percentage, 2-fixed_amount',
+  `discount_amount` bigint(20) DEFAULT NULL COMMENT 'amount of discount, available when discount_type is fixed_amount',
+  `discount_percentage` bigint(20) DEFAULT NULL COMMENT 'percentage of discount, 100=1%, available when discount_type is percentage',
+  `currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'currency of discount, available when discount_type is fixed_amount',
+  `user_limit` int(11) NOT NULL DEFAULT '0' COMMENT 'the limit of every user apply, 0-unlimited',
+  `subscription_limit` int(11) NOT NULL DEFAULT '0' COMMENT 'the limit of every subscription apply, 0-unlimited',
+  `start_time` bigint(20) DEFAULT NULL COMMENT 'start of discount available utc time',
+  `end_time` bigint(20) DEFAULT NULL COMMENT 'end of discount available utc time, 0-invalid',
+  `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
+  `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+  `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
+  `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
+  `cycle_limit` int(11) NOT NULL DEFAULT '0' COMMENT 'the count limitation of subscription cycle , 0-no limit',
+  `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
+  `type` int(11) NOT NULL DEFAULT '0' COMMENT 'type, 1-external discount code',
+  `plan_ids` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Ids of plan which discount code can effect, default effect all plans if not set',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `unique_merchant_discount_code` (`merchant_id`,`code`,`is_deleted`)
+) ENGINE=InnoDB AUTO_INCREMENT=15770 DEFAULT CHARSET=utf8 COMMENT='Merchant Discount Code';
+
+-- ----------------------------
 -- Table structure for merchant_email_history
 -- ----------------------------
 DROP TABLE IF EXISTS `merchant_email_history`;
@@ -267,7 +289,7 @@ CREATE TABLE `merchant_email_history` (
   `response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4649 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Email History';
+) ENGINE=InnoDB AUTO_INCREMENT=6338 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Email History';
 
 -- ----------------------------
 -- Table structure for merchant_email_template
@@ -297,7 +319,7 @@ CREATE TABLE `merchant_gateway` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'gateway_id',
   `merchant_id` bigint(20) unsigned DEFAULT NULL COMMENT 'merchant_id',
   `enum_key` bigint(20) DEFAULT '0' COMMENT 'enum key , match in gateway implementation',
-  `gateway_type` bigint(11) NOT NULL DEFAULT '1' COMMENT 'gateway type，1-Default｜ 2-Crypto',
+  `gateway_type` bigint(11) NOT NULL DEFAULT '1' COMMENT 'gateway type，1-Card｜ 2-Crypto | 3-Wire Transfer',
   `gateway_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway name',
   `name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'name',
   `sub_gateway` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'sub_gateway_enum',
@@ -318,9 +340,12 @@ CREATE TABLE `merchant_gateway` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   `crypto_receive_currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country_config` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'currency',
+  `minimum_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'minimum amount, cent',
+  `bank_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'bank credentials data',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_gateway_unique` (`merchant_id`,`gateway_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Channel Config   Grab：https://developer.grab.com/docs/payment-otc/api/v2/#tag/otc-api   Klarna：https://docs.adyen.com/api-explorer/Checkout/latest/post/payments';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Channel Config   Grab：https://developer.grab.com/docs/payment-otc/api/v2/#tag/otc-api   Klarna：https://docs.adyen.com/api-explorer/Checkout/latest/post/payments';
 
 -- ----------------------------
 -- Table structure for merchant_member
@@ -342,7 +367,7 @@ CREATE TABLE `merchant_member` (
   `role` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'role',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_member_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Member';
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Member';
 
 -- ----------------------------
 -- Table structure for merchant_metric
@@ -363,7 +388,7 @@ CREATE TABLE `merchant_metric` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_metric_unique` (`merchant_id`,`code`,`is_deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=15695 DEFAULT CHARSET=utf8 COMMENT='Merchant Metric';
+) ENGINE=InnoDB AUTO_INCREMENT=15696 DEFAULT CHARSET=utf8 COMMENT='Merchant Metric';
 
 -- ----------------------------
 -- Table structure for merchant_metric_event
@@ -408,7 +433,7 @@ CREATE TABLE `merchant_metric_plan_limit` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_metric_plan_limit_unique` (`merchant_id`,`plan_id`,`metric_id`,`is_deleted`)
-) ENGINE=InnoDB AUTO_INCREMENT=15695 DEFAULT CHARSET=utf8 COMMENT='Merchant Metric Plan Limit';
+) ENGINE=InnoDB AUTO_INCREMENT=15713 DEFAULT CHARSET=utf8 COMMENT='Merchant Metric Plan Limit';
 
 -- ----------------------------
 -- Table structure for merchant_operation_log
@@ -453,6 +478,32 @@ CREATE TABLE `merchant_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Role';
 
 -- ----------------------------
+-- Table structure for merchant_user_discount_code
+-- ----------------------------
+DROP TABLE IF EXISTS `merchant_user_discount_code`;
+CREATE TABLE `merchant_user_discount_code` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `merchant_id` bigint(64) unsigned DEFAULT NULL COMMENT 'merchantId',
+  `user_id` bigint(64) unsigned DEFAULT NULL COMMENT 'user_id',
+  `code` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'code',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT 'status, 1-normal, 2-rollback',
+  `plan_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'plan_id',
+  `subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription_id',
+  `payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'payment_id',
+  `invoice_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'invoice_id',
+  `unique_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'unique_id',
+  `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
+  `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+  `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
+  `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
+  `apply_amount` bigint(64) DEFAULT NULL COMMENT 'apply_amount',
+  `currency` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'currency',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `unique_merchant_user_discount_code` (`unique_id`),
+  KEY `search_user_discount_index` (`merchant_id`,`user_id`,`status`,`code`,`is_deleted`)
+) ENGINE=InnoDB AUTO_INCREMENT=15747 DEFAULT CHARSET=utf8 COMMENT='Merchant User Discount Code';
+
+-- ----------------------------
 -- Table structure for merchant_vat_number_verify_history
 -- ----------------------------
 DROP TABLE IF EXISTS `merchant_vat_number_verify_history`;
@@ -472,7 +523,7 @@ CREATE TABLE `merchant_vat_number_verify_history` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_vat_number_verify_unique` (`merchant_id`,`vat_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=15699 DEFAULT CHARSET=utf8 COMMENT='Merchant Vat Number Verify History';
+) ENGINE=InnoDB AUTO_INCREMENT=15717 DEFAULT CHARSET=utf8 COMMENT='Merchant Vat Number Verify History';
 
 -- ----------------------------
 -- Table structure for merchant_webhook
@@ -489,7 +540,7 @@ CREATE TABLE `merchant_webhook` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `merchant_webhook_unique` (`merchant_id`,`webhook_url`)
-) ENGINE=InnoDB AUTO_INCREMENT=22165 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Webhook';
+) ENGINE=InnoDB AUTO_INCREMENT=22169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Webhook';
 
 -- ----------------------------
 -- Table structure for merchant_webhook_log
@@ -510,7 +561,7 @@ CREATE TABLE `merchant_webhook_log` (
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=27303 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Webhook Log';
+) ENGINE=InnoDB AUTO_INCREMENT=31414 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Webhook Log';
 
 -- ----------------------------
 -- Table structure for merchant_webhook_message
@@ -526,7 +577,7 @@ CREATE TABLE `merchant_webhook_message` (
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=26009 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Webhook Message';
+) ENGINE=InnoDB AUTO_INCREMENT=29624 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Merchant Webhook Message';
 
 -- ----------------------------
 -- Table structure for open_api_config
@@ -601,7 +652,7 @@ CREATE TABLE `payment` (
   `unique_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'unique id',
   `balance_start` bigint(20) DEFAULT NULL COMMENT 'balance_start, utc time',
   `balance_end` bigint(20) DEFAULT NULL COMMENT 'balance_end, utc time',
-  `invoice_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `invoice_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `gateway_payment_method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gas_payer` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'who pay the gas, merchant|user',
   `expire_time` bigint(20) DEFAULT NULL COMMENT 'expire time, utc time',
@@ -610,7 +661,7 @@ CREATE TABLE `payment` (
   `crypto_currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'crypto_currency',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `payment_unique` (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=974 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Payment';
+) ENGINE=InnoDB AUTO_INCREMENT=1493 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Payment';
 
 -- ----------------------------
 -- Table structure for payment_event
@@ -635,7 +686,36 @@ CREATE TABLE `payment_event` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uniq_unique_no` (`unique_no`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=27758 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Payment Event';
+) ENGINE=InnoDB AUTO_INCREMENT=28792 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Payment Event';
+
+-- ----------------------------
+-- Table structure for payment_item
+-- ----------------------------
+DROP TABLE IF EXISTS `payment_item`;
+CREATE TABLE `payment_item` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `biz_type` int(11) DEFAULT NULL COMMENT 'biz_type 1-onetime payment, 3-subscription',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0-pending, 1-success, 2-failure',
+  `merchant_id` bigint(20) unsigned DEFAULT NULL COMMENT 'merchant id',
+  `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'userId',
+  `subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription id',
+  `invoice_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'invoice id',
+  `unique_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'unique id',
+  `currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'currency',
+  `amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'amount',
+  `unit_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'unit_amount',
+  `quantity` bigint(20) NOT NULL DEFAULT '0' COMMENT 'quantity',
+  `gateway_id` bigint(20) unsigned NOT NULL COMMENT 'gateway id',
+  `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
+  `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
+  `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
+  `payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PaymentId',
+  `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
+  `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'description',
+  `name` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'name',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `payment_item_unique` (`unique_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1523 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Payment Item';
 
 -- ----------------------------
 -- Table structure for payment_timeline
@@ -658,9 +738,11 @@ CREATE TABLE `payment_timeline` (
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '0-pending, 1-success, 2-failure',
   `timeline_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-pay, 1-refund',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
+  `refund_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'refund id',
+  `full_refund` int(11) NOT NULL DEFAULT '0' COMMENT '0-no, 1-yes',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `payment_timeline_unique` (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=938 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Payment Timelin';
+) ENGINE=InnoDB AUTO_INCREMENT=1487 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Payment Timelin';
 
 -- ----------------------------
 -- Table structure for plan
@@ -682,7 +764,7 @@ CREATE TABLE `plan` (
   `home_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'home_url',
   `gateway_product_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway product name',
   `gateway_product_description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway product description',
-  `tax_percentage` int(11) NOT NULL DEFAULT '0' COMMENT 'tax scale 1000 = 10%',
+  `tax_percentage` int(11) NOT NULL DEFAULT '0' COMMENT 'taxPercentage 1000 = 10%',
   `tax_inclusive` int(11) NOT NULL DEFAULT '1' COMMENT 'deperated',
   `type` int(11) NOT NULL DEFAULT '1' COMMENT 'type，1-main plan，2-recurring addon plan 3-onetime addon plan',
   `status` int(11) NOT NULL DEFAULT '1' COMMENT 'status，1-editing，2-active，3-inactive，4-expired',
@@ -694,8 +776,12 @@ CREATE TABLE `plan` (
   `extra_metric_data` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
   `gas_payer` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'who pay the gas, merchant|user',
+  `trial_amount` bigint(20) DEFAULT NULL COMMENT 'amount of trial, 0 for free',
+  `trial_duration_time` bigint(20) DEFAULT NULL COMMENT 'duration of trial',
+  `trial_demand` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cancel_at_trial_end` int(11) NOT NULL DEFAULT '0' COMMENT 'whether cancel at subscripiton first trial end，0-false | 1-true, will pass to cancelAtPeriodEnd of subscription',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Plan';
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Plan';
 
 -- ----------------------------
 -- Table structure for refund
@@ -729,9 +815,10 @@ CREATE TABLE `refund` (
   `subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription id',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   `type` int(11) NOT NULL DEFAULT '1' COMMENT '1-gateway refund,2-mark refund',
+  `invoice_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'invoice id',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `refund_unique` (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Refund';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Refund';
 
 -- ----------------------------
 -- Table structure for subscription
@@ -753,7 +840,7 @@ CREATE TABLE `subscription` (
   `latest_invoice_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'latest_invoice_id',
   `type` int(11) NOT NULL DEFAULT '1' COMMENT 'sub type, 0-gateway sub, 1-unibee sub',
   `gateway_id` bigint(20) unsigned NOT NULL COMMENT 'gateway_id',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'status，0-Init | 1-Create｜2-Active｜3-PendingInActive | 4-Cancel | 5-Expire | 6- Suspend| 7-Incomplete',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'status，0-Init | 1-Pending｜2-Active｜3-PendingInActive | 4-Cancel | 5-Expire | 6- Suspend| 7-Incomplete',
   `gateway_subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway subscription id',
   `customer_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'customer_name',
   `customer_email` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'customer_email',
@@ -763,7 +850,7 @@ CREATE TABLE `subscription` (
   `gateway_status` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway status，Stripe：https://stripe.com/docs/billing/subscriptions/webhooks  Paypal：https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_get',
   `gateway_item_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'gateway_item_data',
   `cancel_at_period_end` int(11) NOT NULL DEFAULT '0' COMMENT 'whether cancel at period end，0-false | 1-true ',
-  `gateway_latest_invoice_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'gateway latest invoice id',
+  `discount_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'discount_code',
   `last_update_time` bigint(20) DEFAULT NULL,
   `current_period_start` bigint(20) DEFAULT NULL COMMENT 'current_period_start, utc time',
   `current_period_end` bigint(20) DEFAULT NULL COMMENT 'current_period_end, utc time',
@@ -777,7 +864,7 @@ CREATE TABLE `subscription` (
   `cancel_reason` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `country_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vat_number` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'Tax Scale，1000 = 10%',
+  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'taxPercentage，1000 = 10%',
   `vat_verify_data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
   `response_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -786,9 +873,11 @@ CREATE TABLE `subscription` (
   `test_clock` bigint(20) NOT NULL DEFAULT '0' COMMENT 'test_clock, simulator clock for subscription, if set , sub will out of cronjob controll',
   `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
   `gas_payer` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'who pay the gas, merchant|user',
+  `current_period_paid` bigint(20) NOT NULL DEFAULT '0' COMMENT 'current period paid or not, 1-paid, other-the utc time to expire',
+  `last_track_time` bigint(20) DEFAULT NULL COMMENT 'last subscription track time',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `subscription_unique` (`subscription_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=299 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription';
+) ENGINE=InnoDB AUTO_INCREMENT=672 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription';
 
 -- ----------------------------
 -- Table structure for subscription_admin_note
@@ -804,7 +893,7 @@ CREATE TABLE `subscription_admin_note` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Subscription Admin Note';
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Subscription Admin Note';
 
 -- ----------------------------
 -- Table structure for subscription_onetime_addon
@@ -822,8 +911,9 @@ CREATE TABLE `subscription_onetime_addon` (
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   `payment_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'paymentId',
   `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
+  `user_id` bigint(20) unsigned NOT NULL COMMENT 'userId',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Subscription one-time addon';
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Subscription one-time addon';
 
 -- ----------------------------
 -- Table structure for subscription_pending_update
@@ -839,7 +929,7 @@ CREATE TABLE `subscription_pending_update` (
   `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
   `amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'amount of this period, cent',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'status，0-Init | 1-Create｜2-Finished｜3-Cancelled ',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT 'status，0-Init | 1-Pending｜2-Finished｜3-Cancelled ',
   `proration_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'proration amount of this pending update , cent',
   `update_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'the amount after update',
   `currency` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'currency of this period',
@@ -865,9 +955,11 @@ CREATE TABLE `subscription_pending_update` (
   `proration_date` bigint(20) DEFAULT NULL COMMENT 'merchant_user_id',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
+  `discount_code` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'discount_code',
+  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'taxPercentage，1000 = 10%',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `subscription_pending_update_unique` (`pending_update_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription Pending Update';
+) ENGINE=InnoDB AUTO_INCREMENT=379 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription Pending Update';
 
 -- ----------------------------
 -- Table structure for subscription_timeline
@@ -878,6 +970,7 @@ CREATE TABLE `subscription_timeline` (
   `merchant_id` bigint(20) unsigned DEFAULT NULL COMMENT 'merchant id',
   `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'userId',
   `subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription id',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1-processing,2-finish',
   `period_start` bigint(20) DEFAULT '0' COMMENT 'period_start',
   `period_end` bigint(20) DEFAULT '0' COMMENT 'period_end',
   `period_start_time` timestamp NULL DEFAULT NULL COMMENT 'period start (datetime)',
@@ -894,10 +987,9 @@ CREATE TABLE `subscription_timeline` (
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   `unique_key` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'unique key (deperated)',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1-processing,2-finish',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `subscription_timeline_unique` (`unique_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=827 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription Timeline';
+) ENGINE=InnoDB AUTO_INCREMENT=1184 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Subscription Timeline';
 
 -- ----------------------------
 -- Table structure for user_account
@@ -905,6 +997,13 @@ CREATE TABLE `subscription_timeline` (
 DROP TABLE IF EXISTS `user_account`;
 CREATE TABLE `user_account` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'userId',
+  `gateway_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'gateway_id',
+  `payment_method` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country_code` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'country_code',
+  `country_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'country_name',
+  `VAT_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'vat number',
+  `tax_percentage` bigint(20) NOT NULL DEFAULT '0' COMMENT 'taxPercentage，1000 = 10%',
+  `type` bigint(20) NOT NULL DEFAULT '1' COMMENT 'User type, 1-Individual|2-organization',
   `merchant_id` bigint(20) unsigned DEFAULT NULL COMMENT 'merchant_id',
   `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'update time',
@@ -923,14 +1022,12 @@ CREATE TABLE `user_account` (
   `custom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'custom',
   `last_login_at` bigint(20) DEFAULT NULL COMMENT 'last login time, utc time',
   `is_risk` int(11) DEFAULT '0' COMMENT 'is risk account (deperated)',
-  `gateway_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'gateway_id',
   `version` int(11) NOT NULL DEFAULT '0' COMMENT 'version',
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'phone',
   `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'address',
   `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'first name',
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'last name',
   `company_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'company name',
-  `VAT_number` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'vat number',
   `Telegram` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'telegram',
   `WhatsAPP` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'whats app',
   `WeChat` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'wechat',
@@ -938,20 +1035,17 @@ CREATE TABLE `user_account` (
   `LinkedIn` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'linkedin',
   `Facebook` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'facebook',
   `other_social_info` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_method` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country_code` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'country_code',
-  `country_name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'country_name',
   `subscription_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription name',
   `subscription_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'subscription id',
-  `subscription_status` int(11) DEFAULT NULL COMMENT 'sub status，0-Init | 1-Create｜2-Active｜3-PendingInActive | 4-Cancel | 5-Expire | 6- Suspend| 7-Incomplete',
+  `subscription_status` int(11) DEFAULT NULL COMMENT 'sub status，0-Init | 1-Pending｜2-Active｜3-PendingInActive | 4-Cancel | 5-Expire | 6- Suspend| 7-Incomplete',
   `recurring_amount` bigint(20) NOT NULL DEFAULT '0' COMMENT 'total recurring amount, cent',
   `billing_type` int(11) NOT NULL DEFAULT '0' COMMENT '1-recurring,2-one-time',
   `time_zone` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
   `external_user_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'external_user_id',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0-Active, 2-Frozen',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0-Active, 2-Suspend',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `user_account_unique` (`merchant_id`,`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2235428055 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='User Account';
+) ENGINE=InnoDB AUTO_INCREMENT=2235428103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='User Account';
 
 SET FOREIGN_KEY_CHECKS = 1;
