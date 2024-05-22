@@ -1,17 +1,17 @@
 ### start up 
 ```
-docker compose -f docker-compose-stage.yaml up
+docker compose up
 ```
 ### start up background
 ```
-docker compose -f docker-compose-stage.yaml up -d
+docker compose up -d
 ```
 ### down
 ```
-docker compose -f docker-compose-stage.yaml down
+docker compose down
 ```
 ### down with volume clean
 ```
-docker compose -f docker-compose-stage.yaml down -v
+docker compose down -v
 ```
 
