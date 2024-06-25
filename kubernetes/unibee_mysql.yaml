@@ -19,6 +19,11 @@ data:
     sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     gtid_mode = on
     enforce_gtid_consistency = on
+    # binlog config limitation
+    expire_logs_days = 3
+    max_binlog_size = 100m
+    binlog_cache_size = 4m
+    max_binlog_cache_size = 512m    
 ---
 apiVersion: apps/v1
 kind: StatefulSet
