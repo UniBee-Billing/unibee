@@ -6,5 +6,5 @@ metadata:
   labels:
     app: unibee
 data:
-  UNIBEE_API_URL: http://unibee-api-svc
+  UNIBEE_API_URL: http://unibee-nginx-svc/api
   UNIBEE_REDIS_PASSWORD: changeme
