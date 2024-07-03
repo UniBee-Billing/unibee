@@ -18,7 +18,7 @@ spec:
       containers:
         - name: unibee-user-protal
           image: unibee/user-portal:stage
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: UNIBEE_API_URL
               valueFrom:

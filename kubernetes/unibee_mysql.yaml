@@ -86,7 +86,7 @@ spec:
           failureThreshold: 3
           exec:
             command: ["mysqladmin", "-uroot", "-p${MYSQL_ROOT_PASSWORD}", "ping"]
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
         volumeMounts:
