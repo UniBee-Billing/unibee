@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: unibee-admin-protal
+  name: unibee-admin-portal
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: unibee-admin-protal
+      app: unibee-admin-portal
   replicas: 1
   template:
     metadata:
       labels:
-        app: unibee-admin-protal
+        app: unibee-admin-portal
     spec:
       restartPolicy: Always
       containers:
-        - name: unibee-admin-protal
+        - name: unibee-admin-portal
           image: unibee/admin-portal:stage
           imagePullPolicy: IfNotPresent
           env:
@@ -33,7 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unibee-admin-protal-svc
+  name: unibee-admin-portal-svc
   namespace: default
 spec:
   type: LoadBalancer
@@ -43,4 +43,4 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app: unibee-admin-protal
+    app: unibee-admin-portal

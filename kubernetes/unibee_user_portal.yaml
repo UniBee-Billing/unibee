@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: unibee-user-protal
+  name: unibee-user-portal
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: unibee-user-protal
+      app: unibee-user-portal
   replicas: 1
   template:
     metadata:
       labels:
-        app: unibee-user-protal
+        app: unibee-user-portal
     spec:
       restartPolicy: Always
       containers:
-        - name: unibee-user-protal
+        - name: unibee-user-portal
           image: unibee/user-portal:stage
           imagePullPolicy: IfNotPresent
           env:
@@ -33,7 +33,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unibee-user-protal-svc
+  name: unibee-user-portal-svc
   namespace: default
 spec:
   type: LoadBalancer
@@ -43,4 +43,4 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app: unibee-user-protal
+    app: unibee-user-portal
