@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: unibee-nginx-config
   labels:
-    app: nginx
+    app: unibee-nginx
 data:
   nginx.conf: |-
     user root;
@@ -104,7 +104,7 @@ kind: ConfigMap
 metadata:
   name: unibee-nginx-domains-config
   labels:
-    app: nginx
+    app: unibee-nginx
 data:
   www.unibee.top.key: |-
     key_pem
@@ -116,7 +116,7 @@ kind: ConfigMap
 metadata:
   name: unibee-nginx-statics-config
   labels:
-    app: nginx
+    app: unibee-nginx
 data:
   index.html: |-
     welcome
@@ -126,22 +126,22 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: unibee-nginx
   namespace: default
   labels:
-    app: nginx
+    app: unibee-nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: unibee-nginx
   template:
     metadata:
       labels:
-        app: nginx
+        app: unibee-nginx
     spec:
       containers:
-        - name: nginx
+        - name: unibee-nginx
           image: registry.cn-shenzhen.aliyuncs.com/heiku/heiku_nginx_mirror:3.0
           imagePullPolicy: IfNotPresent
           ports:
@@ -189,6 +189,6 @@ spec:
       nodePort: 443
       protocol: TCP               
   selector:
-    app: nginx
+    app: unibee-nginx
   sessionAffinity: None
   type: LoadBalancer

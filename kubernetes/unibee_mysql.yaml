@@ -4,6 +4,7 @@ metadata:
   name: mysql-config
   labels:
     app: mysql
+fromfile: ../mysql/init.sql
 data:
   my.cnf: |-
     [client]
@@ -53,6 +54,8 @@ spec:
           value: "changeme"
         - name: lower_case_table_names
           value: "1"
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do echo hello; sleep 10;done"]          
         livenessProbe:
           initialDelaySeconds: 30
           periodSeconds: 10
