@@ -181,12 +181,10 @@ spec:
     - name: "http"
       port: 80
       targetPort: 80
-      nodePort: 80
       protocol: TCP
     - name: "https"
       port: 443
       targetPort: 443
-      nodePort: 443
       protocol: TCP               
   selector:
     app: unibee-nginx

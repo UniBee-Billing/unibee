@@ -23,22 +23,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: unibee-config
-                  key: UNIBEE_API_URL
-            - name: UNIBEE_MYSQL_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: unibee-config
-                  key: UNIBEE_MYSQL_USERNAME
-            - name: UNIBEE_MYSQL_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: unibee-config
-                  key: UNIBEE_MYSQL_PASSWORD      
-            - name: UNIBEE_MYSQL_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: unibee-config
-                  key: UNIBEE_MYSQL_DATABASE                                                                           
+                  key: UNIBEE_API_URL                                                                      
             - name: DATABASE_LINK
               value: mysql:unibee:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false
             - name: REDIS_ADDRESS
