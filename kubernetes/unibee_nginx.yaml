@@ -89,7 +89,7 @@ data:
                 proxy_buffer_size 64k;
                 proxy_buffers 32 32k;
                 proxy_busy_buffers_size 128k;
-                proxy_pass http://unibee-admin-protal-svc;
+                proxy_pass http://unibee-admin-portal-svc;
             }
 
             access_log  /var/log/nginx/access.log  main;
