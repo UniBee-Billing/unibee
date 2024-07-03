@@ -1,10 +1,10 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-config
+  name: unibee-mysql-config
   labels:
-    app: mysql
-fromfile: ../mysql/init.sql
+    app: unibee-mysql
 data:
   my.cnf: |-
     [client]
@@ -43,6 +43,16 @@ spec:
       labels:
         app: unibee-mysql
     spec:     
+      initContainers:
+      - name: initsql
+        image: busybox   
+        volumeMounts:
+        - name: unibee-mysql-shared-data
+          mountPath: /docker-entrypoint-initdb.d      
+        command:
+        - /bin/sh
+        - -c
+        - "cd /docker-entrypoint-initdb.d && wget https://raw.githubusercontent.com/UniB-e-e/unibee_deploy/main/mysql/structure.sql"         
       containers:
       - name: unibee-mysql
         image: mysql:8.0.13
@@ -52,10 +62,14 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD 
           value: "changeme"
+        - name: MYSQL_USER
+          value: "unibee"
+        - name: MYSQL_PASSWORD 
+          value: "changeme"         
+        - name: MYSQL_DATABASE 
+          value: "unibee"       
         - name: lower_case_table_names
-          value: "1"
-        command: ["/bin/sh"]
-        args: ["-c", "while true; do echo hello; sleep 10;done"]          
+          value: "1"                       
         livenessProbe:
           initialDelaySeconds: 30
           periodSeconds: 10
@@ -76,13 +90,30 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
+        # You can uncomment this to make database persistence
+        # - name: mysql-data
+        #   mountPath: /var/lib/mysql        
+        - name: unibee-mysql-shared-data
+          mountPath: /docker-entrypoint-initdb.d       
         - name: config
           mountPath: /etc/mysql/conf.d/my.cnf
           subPath: my.cnf
       volumes:
+      - name: unibee-mysql-shared-data
+        emptyDir: {}      
       - name: config      
         configMap:
-          name: mysql-config
+          name: unibee-mysql-config
+  # You can uncomment this and change to your storage class name to make database persistence          
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: mysql-data
+  #   spec:
+  #     accessModes: [ "ReadWriteOnce" ]
+  #     storageClassName: "${YOUR_STORAGE_CLASS_NAME}"
+  #     resources:
+  #       requests:
+  #         storage: 100Gi          
 
 ---
 kind: Service

@@ -20,13 +20,34 @@ spec:
           imagePullPolicy: Always
           env:
             - name: UNIBEE_API_URL
-              value: "http://unibee-api-svc"
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_API_URL
+            - name: UNIBEE_MYSQL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_MYSQL_USERNAME
+            - name: UNIBEE_MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_MYSQL_PASSWORD      
+            - name: UNIBEE_MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_MYSQL_DATABASE                                                                           
             - name: DATABASE_LINK
-              value: "mysql:root:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false"
+              value: mysql:unibee:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false
             - name: REDIS_ADDRESS
               value: "unibee-redis-svc:6379"
             - name: REDIS_PASSWORD
-              value: "changeme"
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_REDIS_PASSWORD   
           ports:
             - containerPort: 8088
               name: http

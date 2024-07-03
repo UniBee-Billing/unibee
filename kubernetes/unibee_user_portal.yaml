@@ -21,7 +21,10 @@ spec:
           imagePullPolicy: Always
           env:
             - name: UNIBEE_API_URL
-              value: "http://unibee-api-svc"
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_API_URL
           ports:
             - containerPort: 80
               name: http

@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unibee-config
+  labels:
+    app: unibee
+data:
+  UNIBEE_API_URL: http://unibee-api-svc
+  # UNIBEE_MYSQL_DATABASE: unibee
+  # UNIBEE_MYSQL_USERNAME: unibee
+  # UNIBEE_MYSQL_PASSWORD: changeme
+  UNIBEE_REDIS_PASSWORD: changeme

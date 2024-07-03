@@ -22,7 +22,13 @@ spec:
           image: >-
             redis:6-alpine
           imagePullPolicy: Always
-          command: ["redis-server", "--appendonly", "yes", "--requirepass","changeme"]
+          command: ["redis-server", "--appendonly", "yes", "--requirepass","$(UNIBEE_REDIS_PASSWORD)"]
+          env:
+            - name: UNIBEE_REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_REDIS_PASSWORD   
       restartPolicy: Always
 
 --- 

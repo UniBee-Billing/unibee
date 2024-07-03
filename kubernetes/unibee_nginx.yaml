@@ -55,8 +55,8 @@ data:
             listen 80;
             # listen 443 ssl;
             server_name _;
-            # ssl_certificate ./domains/www.unibee.top.pem;
-            # ssl_certificate_key ./domains/www.unibee.top.key;
+            # ssl_certificate ./domains/api.unibee.top.pem;
+            # ssl_certificate_key ./domains/api.unibee.top.key;
             # ssl_session_timeout 5m;
             # ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
             # ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
@@ -106,9 +106,9 @@ metadata:
   labels:
     app: unibee-nginx
 data:
-  www.unibee.top.key: |-
+  api.unibee.top.key: |-
     key_pem
-  www.unibee.net.pem: |-
+  api.unibee.net.pem: |-
     secret_pem
 ---    
 apiVersion: v1
