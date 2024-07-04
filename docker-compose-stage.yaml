@@ -65,6 +65,7 @@ services:
       - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
       - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
+      - ENV=${ENV:-stage}
     ports:
       - ${API_PORT:-8088}:8088
 
