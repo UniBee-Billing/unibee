@@ -52,7 +52,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "cd /docker-entrypoint-initdb.d && wget https://raw.githubusercontent.com/UniB-e-e/unibee_deploy/main/mysql/structure.sql"         
+        - "cd /docker-entrypoint-initdb.d && rm -rf structure.sql && wget https://raw.githubusercontent.com/UniB-e-e/unibee_deploy/main/mysql/structure.sql"         
       containers:
       - name: unibee-mysql
         image: mysql:8.0.13
