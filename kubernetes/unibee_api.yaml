@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: unibee-api
-          image: unibee/api:stage
+          image: unibee/api:1.2
           imagePullPolicy: IfNotPresent
           env:
             - name: UNIBEE_API_URL
