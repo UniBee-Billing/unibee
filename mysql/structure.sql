@@ -614,7 +614,7 @@ CREATE TABLE `merchant_webhook_log` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=73152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Webhook Log';
 
-ALTER TABLE `merchant_webhook_log` ADD INDEX `search_index_me` (`merchant_id`,`endpoint_id`)
+ALTER TABLE `merchant_webhook_log` ADD INDEX `search_index_me` (`merchant_id`,`endpoint_id`);
 
 -- ----------------------------
 -- Table structure for merchant_webhook_message
