@@ -854,7 +854,7 @@ CREATE TABLE `refund` (
   `payment_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'relative payment id',
   `refund_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'refund id (system generate)',
   `refund_amount` bigint(20) NOT NULL COMMENT 'refund amount, cent',
-  `refund_comment` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'refund comment',
+  `refund_comment` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'refund comment',
   `status` int(11) NOT NULL DEFAULT '10' COMMENT 'status。10-pending，20-success，30-failure, 40-cancel',
   `refund_time` bigint(20) DEFAULT NULL COMMENT 'refund success time',
   `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'create time',
