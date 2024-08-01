@@ -43,7 +43,7 @@ services:
 
   api:
     container_name: unibee-api
-    image: unibee/api:1.2
+    image: unibee/api:latest
     platform: linux/amd64
     restart: unless-stopped
     # uncomment for startup depends_on db and redis service_healthy
@@ -66,12 +66,13 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
       - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
       - ENV=${ENV:-prod}
+      - MODE=stand-alone
     ports:
       - ${API_PORT:-8088}:8088
 
   userPortal:
     container_name: unibee-user-portal
-    image: unibee/user-portal:1.2
+    image: unibee/user-portal:latest
     platform: linux/amd64
     restart: unless-stopped
     environment:
@@ -81,7 +82,7 @@ services:
 
   adminPortal:
     container_name: unibee-admin-portal
-    image: unibee/admin-portal:1.2
+    image: unibee/admin-portal:latest
     platform: linux/amd64
     restart: unless-stopped
     environment:

@@ -16,7 +16,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: unibee-api
-          image: unibee/api:1.2
+          image: unibee/api:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: UNIBEE_API_URL
@@ -28,6 +28,10 @@ spec:
               value: mysql:unibee:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false
             - name: REDIS_ADDRESS
               value: "unibee-redis-svc:6379"
+            - name: ENV
+              value: "prod"
+            - name: MODE
+              value: "stand-alone"
             - name: REDIS_PASSWORD
               valueFrom:
                 configMapKeyRef:

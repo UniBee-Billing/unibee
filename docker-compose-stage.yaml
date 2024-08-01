@@ -66,6 +66,7 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
       - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
       - ENV=${ENV:-stage}
+      - MODE=stand-alone
     ports:
       - ${API_PORT:-8088}:8088
 
