@@ -78,6 +78,7 @@ CREATE TABLE `file_upload` (
   `gmt_modify` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` int(11) NOT NULL DEFAULT '0' COMMENT '0-UnDeleted，1-Deleted',
   `create_time` bigint(20) DEFAULT NULL COMMENT 'create utc time',
+  `data` longblob COMMENT 'file data',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7075 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='File Upload';
 
