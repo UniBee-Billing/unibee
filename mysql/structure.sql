@@ -727,7 +727,7 @@ CREATE TABLE `payment_event` (
   `merchant_member_id` bigint(20) NOT NULL COMMENT 'merchant_user_id',
   `open_api_id` bigint(20) DEFAULT NULL COMMENT 'open api id',
   `terminal_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'terminal_ip',
-  `biz_type` int(11) NOT NULL DEFAULT '0' COMMENT 'biz_type=1，Payment表',
+  `biz_type` int(11) NOT NULL DEFAULT '0' COMMENT 'biz_type=1，Payment',
   `biz_id` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'biz_type=1，pay；',
   `fee` bigint(20) NOT NULL COMMENT 'amount, cent',
   `event_type` int(11) NOT NULL DEFAULT '0' COMMENT '0-unknown',

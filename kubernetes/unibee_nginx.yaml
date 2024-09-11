@@ -144,11 +144,11 @@ spec:
         - name: unibee-nginx
           image: registry.cn-shenzhen.aliyuncs.com/heiku/heiku_nginx_mirror:3.0
           imagePullPolicy: IfNotPresent
-          resources:             #资源管理，请求请见http://blog.csdn.net/liyingke112/article/details/77452630
-            requests:            #容器运行时，最低资源需求，也就是说最少需要多少资源容器才能正常运行  
-              cpu: 0.3           #CPU资源（核数），两种方式，浮点数或者是整数+m，0.1=100m，最少值为0.001核（1m）
-              memory: 512Mi       #内存使用量  
-            limits:              #资源限制  
+          resources:             
+            requests:            
+              cpu: 0.3           
+              memory: 512Mi      
+            limits:              
               cpu: 1  
               memory: 1Gi               
           ports:
