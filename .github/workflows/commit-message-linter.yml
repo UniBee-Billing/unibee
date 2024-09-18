@@ -1,0 +1,17 @@
+name: Lint commit message
+
+on:
+  push
+
+jobs:
+  lint-commit-message:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Lint commit message
+        uses: wagoid/commitlint-github-action@v6

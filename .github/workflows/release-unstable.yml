@@ -1,0 +1,19 @@
+name: Release the unstable version
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc\.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-alpha\.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-beta\.[0-9]+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Create release
+        run: echo "Release the ${{ github.ref_name }} version"
+
