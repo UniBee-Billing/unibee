@@ -1,0 +1,62 @@
+name: Release sub projects
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Trigger release
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: UniBee-Billing/unibee-admin-portal
+          event-type: release
+          client-payload: '{"version": "${{ github.ref_name }}"}'
+
+      - name: Trigger release
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: UniBee-Billing/unibee-user-portal
+          event-type: release
+          client-payload: '{"version": "${{ github.ref_name }}"}'
+
+      - name: Trigger release
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: UniBee-Billing/unibee-api
+          event-type: release
+          client-payload: '{"version": "${{ github.ref_name }}"}'
+
+      # The bump method is using regex to replace the version number, because any YAML parser will change the format of the file
+      # which is not what we want.
+      - name: Bump images version
+        run: |
+          sed -i -e "s/\(unibee\/user-portal:\).*\$/\1v1.0.0/g" "docker-compose.yaml"
+          sed -i -e "s/\(unibee\/admin-portal:\).*\$/\1v1.0.0/g" "docker-compose.yaml"
+          sed -i -e "s/\(unibee\/api:\).*\$/\1v1.0.0/g" "docker-compose.yaml"
+
+      - name: Commit changes and create PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Bump images version
+          branch: release/${{ github.ref_name }}
+          base: main
+          title: "Release ${{ github.ref_name }}"
+          body: |
+            ## Summary of changes
+            - Bumped images version to v1.0.0
+
+            ## Other information
+            None.

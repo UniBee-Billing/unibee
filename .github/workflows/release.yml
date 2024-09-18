@@ -1,0 +1,94 @@
+name: Release latest version
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build changelog for main repository
+        id: release_main_repo
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: HYBRID
+          owner: UniBee-Billing
+          repo: unibee_deploy
+          token: ${{ secrets.PAT }} 
+          configurationJson: |
+            {
+              "categories": [
+                {
+                    "title": "## What's Changed:",
+                    "labels": []
+                }
+              ]
+            }
+
+      - name: Build changelog for admin portal
+        id: release_admin_portal
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: HYBRID
+          owner: UniBee-Billing
+          repo: unibee-admin-portal
+          token: ${{ secrets.PAT }} 
+          configurationJson: |
+            {
+              "categories": [
+                {
+                    "title": "## Admin portal changes:",
+                    "labels": []
+                }
+              ]
+            }
+            
+      - name: Build changelog for user portal
+        id: release_user_portal
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: HYBRID
+          owner: UniBee-Billing
+          repo: unibee-user-portal
+          token: ${{ secrets.PAT }} 
+          configurationJson: |
+            {
+              "categories": [
+                {
+                    "title": "## User portal changes:",
+                    "labels": []
+                }
+              ]
+            }
+
+      - name: Build changelog for api
+        id: release_api
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          mode: HYBRID
+          owner: UniBee-Billing
+          repo: unibee-api
+          token: ${{ secrets.PAT }} 
+          configurationJson: |
+            {
+              "categories": [
+                {
+                    "title": "## API changes:",
+                    "labels": []
+                }
+              ]
+            }
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            ${{ steps.release_main_repo.outputs.changelog }}
+            ${{ steps.release_admin_portal.outputs.changelog }}
+            ${{ steps.release_user_portal.outputs.changelog }}
+            ${{ steps.release_api.outputs.changelog }}
