@@ -24,7 +24,8 @@ Welcome to UniBee! UniBee is your go-to solution for a seamless, affordable, and
 UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
 
 
-![image](https://github.com/user-attachments/assets/fc44c3c2-2db8-49e3-b52c-f4eecaca27b0)
+![image](https://github.com/user-attachments/assets/88014f40-02c6-47bd-8cd6-b123dc331857)
+
 
 
 
