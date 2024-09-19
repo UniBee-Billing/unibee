@@ -1,7 +1,22 @@
-# UniBee
-[![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat-square&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
+<div align="center">
+  <img width="80px" src="/docs/logo.png" />
+  <h3>UniBee</h3>
+  <div>
 
-The most advanced open-source billing software designed specifically for SaaS businesses.UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
+  [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat-square&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
+
+
+  The most advanced open-source billing software designed specifically for SaaS businesses
+  
+  </div>
+</div>
+
+## 👋 Introduction
+Welcome to UniBee! UniBee is your go-to solution for a seamless, affordable, and intuitive billing experience. Unlike other closed-source and costly platforms, UniBee is open-source and have community version and enterprise version. UniBee is designed specifically for SaaS businesses, with UniBee you can manage your subscriptions, invoices, and transactions with ease.
+
+UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
+
+
 
 ## ✨ Features
 - **Subscription Management**: Manage your subscriptions with ease. Create, update, and cancel subscriptions with a few clicks.
@@ -17,7 +32,7 @@ The most advanced open-source billing software designed specifically for SaaS bu
 
 For more information, please refer to our [documentation](https://docs.unibee.dev/documentation/overview/introduction).
 
-## 👋 Getting started
+## ⌨️ Getting started
 Before you start, make sure you have the following tools installed on your machine:
 
 - [Docker](https://docs.docker.com/engine/install/)
@@ -47,7 +62,7 @@ If you want to start UniBee in development mode, you need to go to our respectiv
 
 
 ## Contributing
-
+We welcome contributions from the community. If you want to contribute to UniBee, please refer to our frontend and backend repositories for more information.
 
 ## License
 This project is licensed under the AGPLv3 License. For more information, please refer to the LICENSE file.
