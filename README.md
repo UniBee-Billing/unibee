@@ -3,10 +3,15 @@
   <h3>UniBee</h3>
   <div>
 
+An open-source universal billing software for SaaS businesses
+
   [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat-square&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
+  [![Linkedin](https://img.shields.io/badge/%40unibee--billing-%230A66C2?style=flat-square&logo=linkedin)
+](https://www.linkedin.com/company/unibee-billing/)
+  [![X](https://img.shields.io/badge/%40UniBee__Billing-black?style=flat-square&logo=x)
+](https://x.com/UniBee_Billing)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat-square&label=Official%20Website)
 
-
-  The most advanced open-source billing software designed specifically for SaaS businesses
   
   </div>
 </div>
@@ -15,6 +20,12 @@
 Welcome to UniBee! UniBee is your go-to solution for a seamless, affordable, and intuitive billing experience. Unlike other closed-source and costly platforms, UniBee is open-source and have community version and enterprise version. UniBee is designed specifically for SaaS businesses, with UniBee you can manage your subscriptions, invoices, and transactions with ease.
 
 UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
+
+
+![image](https://github.com/user-attachments/assets/fc44c3c2-2db8-49e3-b52c-f4eecaca27b0)
+
+
+
 
 
 
@@ -64,6 +75,14 @@ If you want to start UniBee in development mode, you need to go to our respectiv
 ## Contributing
 We welcome contributions from the community. If you want to contribute to UniBee, please refer to our frontend and backend repositories for more information.
 
+## Community driven
+UniBee was born from real-world SaaS billing challenges. Our journey through WooCommerce, WHMCS, and KillBill taught us that existing solutions were either inflexible, expensive, or couldn’t scale with growing businesses.
+
+After years of struggling with closed systems, escalating costs, and limited customization, we realized the SaaS world needed a better solution. We combined our hard-earned lessons with open-source principles to create UniBee – a billing system that’s fair, flexible, and puts control back in the hands of businesses.
+
 ## License
 This project is licensed under the AGPLv3 License. For more information, please refer to the LICENSE file.
+
+## Contact
+If you have any questions, please contact us at [help@unibee.dev](mailto:help@unibee.dev), and we will get back to you as soon as possible.
 
