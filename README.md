@@ -10,7 +10,7 @@ An open-source universal billing software for SaaS businesses
 ](https://www.linkedin.com/company/unibee-billing/)
   [![X](https://img.shields.io/badge/%40UniBee__Billing-black?style=flat-square&logo=x)
 ](https://x.com/UniBee_Billing)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat-square&label=Official%20Website)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat-square&label=Official%20Website)](https://unibee.dev/)
 [![Documentation](https://img.shields.io/badge/Documentation-%23F8CD0F?style=flat-square&logo=readthedocs&logoColor=black)](https://docs.unibee.dev/)
 
 
