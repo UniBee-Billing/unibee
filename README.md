@@ -5,14 +5,15 @@
 
 An open-source universal billing software for SaaS businesses
 
-  [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat-square&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
-  [![Documentation](https://img.shields.io/badge/Documentation-%23F8CD0F?style=flat-square&logo=readthedocs&logoColor=black)](https://docs.unibee.dev/)
-  [![Linkedin](https://img.shields.io/badge/%40unibee--billing-%230A66C2?style=flat-square&logo=linkedin)
+  [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
+  
+  [![Documentation](https://img.shields.io/badge/Documentation-%23F8CD0F?style=flat&logo=readthedocs&logoColor=black)](https://docs.unibee.dev/)
+  [![Linkedin](https://img.shields.io/badge/%40unibee--billing-%230A66C2?style=flat&logo=linkedin)
 ](https://www.linkedin.com/company/unibee-billing/)
-  [![X](https://img.shields.io/badge/%40UniBee__Billing-black?style=flat-square&logo=x)
+  [![X](https://img.shields.io/badge/%40UniBee__Billing-black?style=flat&logo=x)
 ](https://x.com/UniBee_Billing)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat-square&label=Official%20Website)](https://unibee.dev/)
-[![Discord](https://img.shields.io/discord/1280745080063397910?style=flat-square&logo=discord&logoColor=white&label=Discord&labelColor=%235865F2)](https://discord.gg/2WTKznKt)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat&label=Official%20Website)](https://unibee.dev/)
+[![Discord](https://img.shields.io/discord/1280745080063397910?style=flat&logo=discord&logoColor=white&label=Discord&labelColor=%235865F2)](https://discord.gg/2WTKznKt)
 
 
   
