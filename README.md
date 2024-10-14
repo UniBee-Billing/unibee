@@ -6,14 +6,16 @@
 An open-source universal billing software for SaaS businesses
 
   [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
-  
   [![Documentation](https://img.shields.io/badge/Documentation-%23F8CD0F?style=flat&logo=readthedocs&logoColor=black)](https://docs.unibee.dev/)
+  
   [![Linkedin](https://img.shields.io/badge/%40unibee--billing-%230A66C2?style=flat&logo=linkedin)
 ](https://www.linkedin.com/company/unibee-billing/)
   [![X](https://img.shields.io/badge/%40UniBee__Billing-black?style=flat&logo=x)
 ](https://x.com/UniBee_Billing)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Funibee.dev%2Fwhy-unibee%2F&up_message=active&down_message=offline&style=flat&label=Official%20Website)](https://unibee.dev/)
-
+[![Open source community](https://img.shields.io/badge/-community-%2326A5E4?style=flat&logo=telegram&logoColor=white&labelColor=%2326A5E4)
+](https://t.me/+KC_L87uFTl82NDI0)
+[![Official channel](https://img.shields.io/badge/-official%20channel-%2326A5E4?style=flat&logo=telegram&logoColor=white&labelColor=%2326A5E4)](https://t.me/+xncwy-uZFE1lMTI0)
   
   </div>
 </div>
@@ -22,9 +24,6 @@ An open-source universal billing software for SaaS businesses
 Welcome to UniBee! UniBee is your go-to solution for a seamless, affordable, and intuitive billing experience. Unlike other closed-source and costly platforms, UniBee is open-source and have community version and enterprise version. UniBee is designed specifically for SaaS businesses, with UniBee you can manage your subscriptions, invoices, and transactions with ease.
 
 UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
-
-
-![image](https://github.com/user-attachments/assets/88014f40-02c6-47bd-8cd6-b123dc331857)
 
 
 
