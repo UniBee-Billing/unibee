@@ -6,18 +6,42 @@ on:
       - closed
 
 jobs:
+  parse-version:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
+    steps:
+      - name: Get branch names.
+        id: branch-names
+        uses: tj-actions/branch-names@v8
+
+      - name: Extract version
+        id: extract_version
+        run: |
+          if [[ ${{ steps.branch-names.outputs.current_branch }} =~ ^[^/]+/(v[0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            echo "version=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "No version found"
+            exit 1
+          fi
+
   release:
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
+    needs: parse-version
     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
       - name: Build changelog for main repository
         id: release_main_repo
         uses: mikepenz/release-changelog-builder-action@v5
         with:
           mode: HYBRID
           owner: UniBee-Billing
-          repo: unibee_deploy
-          token: ${{ secrets.PAT }} 
+          repo: unibee
+          token: ${{ secrets.PAT }}
           configurationJson: |
             {
               "categories": [
@@ -25,7 +49,8 @@ jobs:
                     "title": "## What's Changed:",
                     "labels": []
                 }
-              ]
+              ],
+              "pr_template": "- #{{TITLE}}"
             }
 
       - name: Build changelog for admin portal
@@ -35,7 +60,8 @@ jobs:
           mode: HYBRID
           owner: UniBee-Billing
           repo: unibee-admin-portal
-          token: ${{ secrets.PAT }} 
+          token: ${{ secrets.PAT }}
+          toTag: ${{ needs.parse-version.outputs.version }}
           configurationJson: |
             {
               "categories": [
@@ -43,17 +69,19 @@ jobs:
                     "title": "## Admin portal changes:",
                     "labels": []
                 }
-              ]
+              ],
+              "pr_template": "- #{{TITLE}}"
             }
-            
+
       - name: Build changelog for user portal
         id: release_user_portal
         uses: mikepenz/release-changelog-builder-action@v5
         with:
           mode: HYBRID
           owner: UniBee-Billing
+          toTag: ${{ needs.parse-version.outputs.version }}
           repo: unibee-user-portal
-          token: ${{ secrets.PAT }} 
+          token: ${{ secrets.PAT }}
           configurationJson: |
             {
               "categories": [
@@ -61,7 +89,8 @@ jobs:
                     "title": "## User portal changes:",
                     "labels": []
                 }
-              ]
+              ],
+              "pr_template": "- #{{TITLE}}"
             }
 
       - name: Build changelog for api
@@ -70,8 +99,9 @@ jobs:
         with:
           mode: HYBRID
           owner: UniBee-Billing
+          toTag: ${{ needs.parse-version.outputs.version }}
           repo: unibee-api
-          token: ${{ secrets.PAT }} 
+          token: ${{ secrets.PAT }}
           configurationJson: |
             {
               "categories": [
@@ -79,14 +109,15 @@ jobs:
                     "title": "## API changes:",
                     "labels": []
                 }
-              ]
+              ],
+              "pr_template": "- #{{TITLE}}"
             }
 
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag: ${{ needs.parse-version.outputs.version }}
+          name: Release ${{ needs.parse-version.outputs.version }}
           body: |
             ${{ steps.release_main_repo.outputs.changelog }}
             ${{ steps.release_admin_portal.outputs.changelog }}
