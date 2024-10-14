@@ -54,7 +54,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.PAT}}
-          commit-message: Bump images version
+          commit-message: "ci: bump images version"
           branch: release/${{ github.ref_name }}
           base: main
           title: "Release ${{ github.ref_name }}"
