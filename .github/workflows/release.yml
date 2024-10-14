@@ -5,6 +5,9 @@ on:
     types:
       - closed
 
+permissions:
+  contents: write
+
 jobs:
   parse-version:
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
