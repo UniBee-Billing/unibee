@@ -64,11 +64,36 @@ services:
       - DATABASE_LINK=mysql:root:${DB_ROOT_PASSWORD:-changeme}@tcp(${DB_HOST:-db}:${DB_PORT:-3306})/${DB_DATABASE:-unibee}?loc=UTC&parseTime=false
       - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
-      - UNIBEE_LICENSE=${UNIBEE_LICENSE:-}
       - ENV=${ENV:-stage}
       - MODE=stand-alone
     ports:
       - ${API_PORT:-8088}:8088
+
+  license:
+    container_name: unibee-license
+    image: unibee/license-api:v1.0.1-premium
+    platform: linux/amd64
+    restart: unless-stopped
+    # uncomment for startup depends_on db and redis service_healthy
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    #   redis:
+    #     condition: service_healthy
+    healthcheck:
+      test: curl -f http://127.0.0.1:8080/health || exit 1
+      interval: 10s
+      start_period: 30s
+      timeout: 60s
+      # uncomment for a potentially faster startup if you have docker --version > 25.0.0
+      # start_interval: 2s
+    environment:
+      - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
+      - ENV=${ENV:-stage}
+      - MODE=stand-alone
+    ports:
+      - ${API_PORT:-8080}:8080
 
   userPortal:
     container_name: unibee-user-portal

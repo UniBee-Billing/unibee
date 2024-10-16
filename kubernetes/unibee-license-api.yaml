@@ -1,0 +1,96 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unibee-license-api
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: unibee-license-api
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: unibee-license-api
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: license-config
+          configMap:
+            name: unibee-license-api-config     
+      containers:
+        - name: unibee-license-api
+          image: unibee/license-api:v1.0.1-premium
+          imagePullPolicy: Always         
+          env:
+            - name: UNIBEE_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_LICENSE_API_URL                                                                      
+            - name: REDIS_ADDRESS
+              value: "unibee-redis-svc:6379"
+            - name: ENV
+              value: "stage"
+            - name: MODE
+              value: "standalone"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: unibee-config
+                  key: UNIBEE_REDIS_PASSWORD   
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 9999
+              name: debug
+            - containerPort: 8808
+              name: dubbo
+            - containerPort: 8848
+              name: dubbo-nacos
+          livenessProbe:         #pod内容器健康检查的设置，详情请见http://blog.csdn.net/liyingke112/article/details/77531584
+            httpGet:             #通过httpget检查健康，返回200-399之间，则认为容器正常
+              path: /health             #URI地址
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30 #表明第一次检测在容器启动后多长时间后开始
+            periodSeconds: 10    #检查间隔时间
+            timeoutSeconds: 10    #检测的超时时间
+            failureThreshold: 100
+          readinessProbe:
+            failureThreshold: 600
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 5
+            timeoutSeconds: 10
+
+---
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: unibee-license-api-svc
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+    - name: debug
+      port: 9999
+      protocol: TCP
+      targetPort: debug
+  selector:
+    app: unibee-license-api

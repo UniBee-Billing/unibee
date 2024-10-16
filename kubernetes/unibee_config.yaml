@@ -7,4 +7,5 @@ metadata:
     app: unibee
 data:
   UNIBEE_API_URL: http://unibee-nginx-svc/api
+  UNIBEE_LICENSE_API_URL: https://unib.mlx.yt/license-api
   UNIBEE_REDIS_PASSWORD: changeme
