@@ -17,7 +17,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: unibee-admin-portal
-          image: unibee/admin-portal:1.2
+          image: unibee/admin-portal:v1.1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: UNIBEE_API_URL
