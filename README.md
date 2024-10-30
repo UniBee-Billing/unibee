@@ -64,7 +64,9 @@ cd unibee
 
 # Start the project
 docker-compose up
+Open Link: http://localhost
 ```
+
 
 ### 💻 Development
 If you want to start UniBee in development mode, you need to go to our respective open-source frontend and backend repositories. Follow the instructions in their respective README files to start their services.

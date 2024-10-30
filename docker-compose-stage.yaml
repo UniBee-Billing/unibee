@@ -53,25 +53,26 @@ services:
     #   redis:
     #     condition: service_healthy
     healthcheck:
-      test: curl -f http://127.0.0.1:8088/health || exit 1
+      test: curl -f http://127.0.0.1/health || exit 1
       interval: 10s
       start_period: 30s
       timeout: 60s
       # uncomment for a potentially faster startup if you have docker --version > 25.0.0
       # start_interval: 2s
     environment:
-      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1:8088}
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1/api}
+      - SERVER_ADDRESS=${API_SERVER_ADDRESS:-80}
       - DATABASE_LINK=mysql:root:${DB_ROOT_PASSWORD:-changeme}@tcp(${DB_HOST:-db}:${DB_PORT:-3306})/${DB_DATABASE:-unibee}?loc=UTC&parseTime=false
       - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
       - ENV=${ENV:-stage}
       - MODE=stand-alone
     ports:
-      - ${API_PORT:-8088}:8088
+      - ${API_PORT:-8088}:80
 
-  license:
-    container_name: unibee-license
-    image: unibee/license-api:v1.0.1-premium
+  licenseApi:
+    container_name: unibee-license-api
+    image: unibee/license-api:v1.0.2-premium
     platform: linux/amd64
     restart: unless-stopped
     # uncomment for startup depends_on db and redis service_healthy
@@ -81,7 +82,7 @@ services:
     #   redis:
     #     condition: service_healthy
     healthcheck:
-      test: curl -f http://127.0.0.1:8080/health || exit 1
+      test: curl -f http://127.0.0.1/health || exit 1
       interval: 10s
       start_period: 30s
       timeout: 60s
@@ -89,11 +90,12 @@ services:
       # start_interval: 2s
     environment:
       - REDIS_ADDRESS=${REDIS_HOST:-redis}:${REDIS_PORT:-6379}
+      - SERVER_ADDRESS=${LICENSE_API_SERVER_ADDRESS:-80}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-changeme}
       - ENV=${ENV:-stage}
       - MODE=stand-alone
     ports:
-      - ${API_PORT:-8080}:8080
+      - ${API_PORT:-8083}:80
 
   userPortal:
     container_name: unibee-user-portal
@@ -101,9 +103,9 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     environment:
-      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1:8088}
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1/api}
     ports:
-      - ${API_PORT:-8086}:80
+      - ${API_PORT:-8082}:80
 
   adminPortal:
     container_name: unibee-admin-portal
@@ -111,6 +113,20 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     environment:
-      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://localhost:8088}
+      - UNIBEE_API_URL=${UNIBEE_API_URL:-http://127.0.0.1/api}
     ports:
-      - ${API_PORT:-80}:80      
+      - ${API_PORT:-8081}:80     
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.9.10  
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      - NGINX_PORT=80
+      - TZ=Asia/Shanghai  
+    volumes:
+      - ./nginx.conf/:/etc/nginx/nginx.conf      
+    ports:
+      - ${NGINX_PORT:-80}:80   
+      - ${NGINX_SSL_PORT:-443}:443       
