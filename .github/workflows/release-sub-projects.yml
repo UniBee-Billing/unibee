@@ -49,6 +49,9 @@ jobs:
           sed -i -e "s/\(unibee\/user-portal:\).*\$/\1${{ github.ref_name }}/g" "./docker-compose.yaml"
           sed -i -e "s/\(unibee\/admin-portal:\).*\$/\1${{ github.ref_name }}/g" "./docker-compose.yaml"
           sed -i -e "s/\(unibee\/api:\).*\$/\1${{ github.ref_name }}/g" "docker-compose.yaml"
+          sed -i -e "s/\(unibee\/admin-portal:\).*\$/\1${{ github.ref_name }}/g" "./kubernetes/unibee_admin_portal.yaml"
+          sed -i -e "s/\(unibee\/user-portal:\).*\$/\1${{ github.ref_name }}/g" "./kubernetes/unibee_user_portal.yaml"
+          sed -i -e "s/\(unibee\/api:\).*\$/\1${{ github.ref_name }}/g" "./kubernetes/unibee_api.yaml"
 
       - name: Commit changes and create PR
         uses: peter-evans/create-pull-request@v7
