@@ -317,6 +317,7 @@ CREATE TABLE `merchant_discount_code` (
   `meta_data` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'meta_data(json)',
   `type` int(11) NOT NULL DEFAULT '0' COMMENT 'type, 1-external discount code',
   `plan_ids` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Ids of plan which discount code can effect, default effect all plans if not set',
+  `quantity` bigint(20) NOT NULL DEFAULT '0' COMMENT 'quantity of code',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `unique_merchant_discount_code` (`merchant_id`,`code`,`is_deleted`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15772 DEFAULT CHARSET=utf8 COMMENT='Merchant Discount Code';
