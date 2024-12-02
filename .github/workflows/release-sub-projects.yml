@@ -63,7 +63,7 @@ jobs:
           title: "Release ${{ github.ref_name }}"
           body: |
             ## Summary of changes
-            - Bumped images version to v1.0.0
+            - Bumped images version to ${{ github.ref_name }}
 
             ## Other information
             None.
