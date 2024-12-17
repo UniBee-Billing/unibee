@@ -16,14 +16,14 @@ spec:
       restartPolicy: Always
       containers:
         - name: unibee-api
-          image: unibee/api:v1.4.0
+          image: unibee/api:v1.4.1
           imagePullPolicy: IfNotPresent
           env:
             - name: UNIBEE_API_URL
               valueFrom:
                 configMapKeyRef:
                   name: unibee-config
-                  key: UNIBEE_API_URL                                                                      
+                  key: UNIBEE_API_URL
             - name: DATABASE_LINK
               value: mysql:unibee:changeme@tcp(unibee-mysql-svc:3306)/unibee?loc=UTC&parseTime=false
             - name: REDIS_ADDRESS
@@ -36,18 +36,18 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: unibee-config
-                  key: UNIBEE_REDIS_PASSWORD   
+                  key: UNIBEE_REDIS_PASSWORD
           ports:
             - containerPort: 8088
               name: http
-          livenessProbe:         
-            httpGet:             
-              path: /health      
+          livenessProbe:
+            httpGet:
+              path: /health
               port: 8088
               scheme: HTTP
-            initialDelaySeconds: 30 
-            periodSeconds: 10    
-            timeoutSeconds: 10  
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 10
             failureThreshold: 100
           readinessProbe:
             failureThreshold: 600
