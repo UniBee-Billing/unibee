@@ -1,8 +1,8 @@
 version: "3.8"
 
 volumes:
- unibee_mysql_data: 
- unibee_redis_data:
+  unibee_mysql_data:
+  unibee_redis_data:
 
 services:
   db:
@@ -16,9 +16,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-changeme}
       MYSQL_PORT: ${DB_PORT:-3306}
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
-      retries: 10      
+      retries: 10
     volumes:
       - unibee_mysql_data:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
     command: --port ${REDIS_PORT:-6379} --requirepass ${REDIS_PASSWORD:-changeme}
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]    
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
     volumes:
       - unibee_redis_data:/data
     ports:
@@ -42,7 +42,7 @@ services:
 
   api:
     container_name: unibee-api
-    image: unibee/api:v1.4.0
+    image: unibee/api:v1.4.1
     platform: linux/amd64
     restart: unless-stopped
     # uncomment for startup depends_on db and redis service_healthy
@@ -95,11 +95,11 @@ services:
       - ENV=${ENV:-prod}
       - MODE=stand-alone
     ports:
-      - ${API_PORT:-8083}:80      
+      - ${API_PORT:-8083}:80
 
   userPortal:
     container_name: unibee-user-portal
-    image: unibee/user-portal:v1.4.0
+    image: unibee/user-portal:v1.4.1
     platform: linux/amd64
     restart: unless-stopped
     environment:
@@ -109,24 +109,24 @@ services:
 
   adminPortal:
     container_name: unibee-admin-portal
-    image: unibee/admin-portal:v1.4.0
+    image: unibee/admin-portal:v1.4.1
     platform: linux/amd64
     restart: unless-stopped
     environment:
       - UNIBEE_API_URL=${UNIBEE_API_URL:-http://localhost/api}
     ports:
-      - ${API_PORT:-8081}:80      
+      - ${API_PORT:-8081}:80
 
   nginx:
     container_name: nginx
-    image: nginx:1.27.2  
+    image: nginx:1.27.2
     platform: linux/amd64
     restart: unless-stopped
     environment:
       - NGINX_PORT=80
-      - TZ=Asia/Shanghai  
+      - TZ=Asia/Shanghai
     volumes:
-      - ./nginx.conf/:/etc/nginx/nginx.conf      
+      - ./nginx.conf/:/etc/nginx/nginx.conf
     ports:
-      - ${NGINX_PORT:-80}:80   
-      - ${NGINX_SSL_PORT:-443}:443         
+      - ${NGINX_PORT:-80}:80
+      - ${NGINX_SSL_PORT:-443}:443
