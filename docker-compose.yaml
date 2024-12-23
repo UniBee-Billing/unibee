@@ -42,7 +42,7 @@ services:
 
   api:
     container_name: unibee-api
-    image: unibee/api:v1.4.1
+    image: unibee/api:v1.4.2
     platform: linux/amd64
     restart: unless-stopped
     # uncomment for startup depends_on db and redis service_healthy
@@ -99,7 +99,7 @@ services:
 
   userPortal:
     container_name: unibee-user-portal
-    image: unibee/user-portal:v1.4.1
+    image: unibee/user-portal:v1.4.2
     platform: linux/amd64
     restart: unless-stopped
     environment:
@@ -109,7 +109,7 @@ services:
 
   adminPortal:
     container_name: unibee-admin-portal
-    image: unibee/admin-portal:v1.4.1
+    image: unibee/admin-portal:v1.4.2
     platform: linux/amd64
     restart: unless-stopped
     environment:
