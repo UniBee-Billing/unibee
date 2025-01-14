@@ -109,7 +109,7 @@ services:
 
   adminPortal:
     container_name: unibee-admin-portal
-    image: unibee/admin-portal:v1.4.2
+    image: unibee/admin-portal:v1.5.1
     platform: linux/amd64
     restart: unless-stopped
     environment:
