@@ -22,7 +22,7 @@ spec:
           image: >-
             redis:6-alpine
           imagePullPolicy: IfNotPresent
-          command: ["redis-server", "--appendonly", "yes", "--requirepass","$(UNIBEE_REDIS_PASSWORD)"]
+          command: ["redis-server", "--appendonly", "no", "--requirepass","$(UNIBEE_REDIS_PASSWORD)"]
           env:
             - name: UNIBEE_REDIS_PASSWORD
               valueFrom:
