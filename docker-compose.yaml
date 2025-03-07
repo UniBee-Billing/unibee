@@ -1,5 +1,3 @@
-version: "3.8"
-
 volumes:
   unibee_mysql_data:
   unibee_redis_data:
