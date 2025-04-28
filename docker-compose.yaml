@@ -97,7 +97,7 @@ services:
 
   userPortal:
     container_name: unibee-user-portal
-    image: unibee/user-portal:v1.7.2
+    image: unibee/user-portal:v1.7.3
     platform: linux/amd64
     restart: unless-stopped
     environment:
