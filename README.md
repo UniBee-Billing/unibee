@@ -45,8 +45,16 @@ UniBee offers a user-friendly and cost-effective alternative to closed-source, e
 
 For more information, please refer to our [documentation](https://docs.unibee.dev/documentation/overview/introduction).
 
-## ⌨️ Getting started
-Before you start, make sure you have the following tools installed on your machine:
+## 🚀 Explore UniBee Cloud (SaaS)
+
+Looking for a fully managed experience?  
+Check out [UniBee Cloud](https://unibee.dev) — our hosted SaaS version with automatic scaling, built-in analytics, and premium support.  
+**Note:** UniBee Cloud is a paid service.
+
+---
+
+## ⌨️ Getting started with standalone deployment
+Before you begin, make sure you have the following tools installed on your machine:
 
 - [Docker](https://docs.docker.com/engine/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
@@ -64,6 +72,7 @@ cd unibee
 
 # Start the project
 docker-compose up
+# Make sure that all containers, including the database, Redis, and UniBee API, are fully started and ready.
 Open Link: http://localhost
 ```
 
