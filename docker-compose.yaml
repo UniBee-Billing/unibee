@@ -36,7 +36,7 @@ services:
     volumes:
       - unibee_redis_data:/data
     ports:
-      - ${REDIS_PORT:-6379}:${REDIS_PORT-6379}
+      - ${REDIS_PORT:-6379}:${REDIS_PORT:-6379}
 
   api:
     container_name: unibee-api
