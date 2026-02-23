@@ -3,7 +3,7 @@
   <h3>UniBee</h3>
   <div>
 
-An open-source universal billing software for SaaS businesses
+Universal open source billing software for SaaS businesses
 
   [![Conventional Commits Badge](https://img.shields.io/github/actions/workflow/status/UniBee-Billing/unibee/commit-message-linter.yml?style=flat&label=Conventional%20Commits)](https://www.conventionalcommits.org/en/v1.0.0/)
   [![Documentation](https://img.shields.io/badge/Documentation-%23F8CD0F?style=flat&logo=readthedocs&logoColor=black)](https://docs.unibee.dev/)
@@ -21,9 +21,9 @@ An open-source universal billing software for SaaS businesses
 </div>
 
 ## 👋 Introduction
-Welcome to UniBee! UniBee is your go-to solution for a seamless, affordable, and intuitive billing experience. Unlike other closed-source and costly platforms, UniBee is open-source and have community version and enterprise version. UniBee is designed specifically for SaaS businesses, with UniBee you can manage your subscriptions, invoices, and transactions with ease.
+Welcome to UniBee! UniBee is your solution for a seamless, affordable, and intuitive billing experience. Unlike other closed source and costly platforms, UniBee is open source and has both community and enterprise versions. UniBee is designed specifically for SaaS businesses; with UniBee you can manage your subscriptions, invoices, and transactions with ease.
 
-UniBee offers a user-friendly and cost-effective alternative to closed-source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
+UniBee offers an easy to use, affordable alternative to closed source, expensive, and complex solutions like Recurly, Chargebee, and Paddle.
 
 
 
@@ -36,7 +36,7 @@ UniBee offers a user-friendly and cost-effective alternative to closed-source, e
 - **Invoicing**: Automatically generate and send invoices to your customers.
 - **Billable metrics**: Track your billable metrics and generate reports to analyze your business performance.
 - **Product and plan management**: Create and manage your products and plans with ease.
-- **Webhooks**: Receive real-time notifications about events that happen in your account.
+- **Webhooks**: Receive real time notifications about events that happen in your account.
 - **User management**: Manage your users and their permissions with ease.
 - **Reports**: Generate reports to analyze your business performance.
 - **Transaction management**: Manage your transactions and refunds with ease.
@@ -48,10 +48,10 @@ For more information, please refer to our [documentation](https://docs.unibee.de
 ## 🚀 Explore UniBee Cloud (SaaS)
 
 Looking for a fully managed experience?  
-Check out [UniBee Cloud](https://unibee.dev) — our hosted SaaS version with automatic scaling, built-in analytics, and premium support.  
+Check out [UniBee Cloud](https://unibee.dev): our hosted SaaS version with automatic scaling, integrated analytics, and premium support.  
 **Note:** UniBee Cloud is a paid service.
 
----
+***
 
 ## ⌨️ Getting started with standalone deployment
 Before you begin, make sure you have the following tools installed on your machine:
@@ -78,7 +78,7 @@ Open Link: http://localhost
 
 
 ### 💻 Development
-If you want to start UniBee in development mode, you need to go to our respective open-source frontend and backend repositories. Follow the instructions in their respective README files to start their services.
+If you want to start UniBee in development mode, you need to go to our respective open source frontend and backend repositories. Follow the instructions in their respective README files to start their services.
 
 - [unibee-admin-portal](https://github.com/UniBee-Billing/unibee-admin-portal)
 - [unibee-user-portal](https://github.com/UniBee-Billing/unibee-user-portal)
@@ -89,9 +89,9 @@ If you want to start UniBee in development mode, you need to go to our respectiv
 We welcome contributions from the community. If you want to contribute to UniBee, please refer to our frontend and backend repositories for more information.
 
 ## Community driven
-UniBee was born from real-world SaaS billing challenges. Our journey through WooCommerce, WHMCS, and KillBill taught us that existing solutions were either inflexible, expensive, or couldn’t scale with growing businesses.
+UniBee was born from real world SaaS billing challenges. Our journey through WooCommerce, WHMCS, and KillBill taught us that existing solutions were either inflexible, expensive, or couldn’t scale with growing businesses.
 
-After years of struggling with closed systems, escalating costs, and limited customization, we realized the SaaS world needed a better solution. We combined our hard-earned lessons with open-source principles to create UniBee – a billing system that’s fair, flexible, and puts control back in the hands of businesses.
+After years of struggling with closed systems, escalating costs, and limited customization, we realized the SaaS world needed a better solution. We combined the lessons we learned with open source principles to create UniBee, a billing system that’s fair, flexible, and puts control back in the hands of businesses.
 
 ## License
 This project is licensed under the AGPLv3 License. For more information, please refer to the LICENSE file.
